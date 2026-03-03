@@ -1,4 +1,4 @@
 @echo off
 cd /d "%~dp0"
 call venv\Scripts\activate
-python launcher.py
+python3 launcher.py

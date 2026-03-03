@@ -1,4 +1,4 @@
 #!/bin/bash
 cd "$(dirname "$0")"
 source venv/bin/activate
-python launcher.py
+python3 launcher.py

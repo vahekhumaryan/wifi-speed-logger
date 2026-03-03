@@ -144,23 +144,30 @@ def log_speed_data(data):
         writer = csv.writer(file)
         writer.writerow(data)
 
-def main():
-    """Main loop to log Wi-Fi speed data every minute."""
+def run_single_test():
+    """Runs a single speed test and logs the result. Returns the log entry."""
+    current_datetime = datetime.datetime.now()
+    date = current_datetime.strftime("%Y-%m-%d")
+    time_now = current_datetime.strftime("%H:%M:%S")
+
+    connection_type = get_connection_type()
+    wifi_ssid = get_wifi_ssid() if connection_type == "Wi-Fi" else ""
+    download, upload, ping = get_speed_test_results()
+
+    log_entry = [date, time_now, connection_type, wifi_ssid, download, upload, ping]
+    log_speed_data(log_entry)
+
+    logging.info(f"Logged: Type: {connection_type}, SSID: {wifi_ssid}, Download: {download} Mbps, Upload: {upload} Mbps, Ping: {ping} ms")
+    return log_entry
+
+def main(callback=None):
+    """Main loop to log Wi-Fi speed data every minute.
+    If callback is provided, it's called with each log entry."""
     initialize_csv()
     while True:
-        current_datetime = datetime.datetime.now()
-        date = current_datetime.strftime("%Y-%m-%d")
-        time_now = current_datetime.strftime("%H:%M:%S")
-
-        connection_type = get_connection_type()
-        wifi_ssid = get_wifi_ssid() if connection_type == "Wi-Fi" else ""
-        download, upload, ping = get_speed_test_results()
-
-        log_entry = [date, time_now, connection_type, wifi_ssid, download, upload, ping]
-        log_speed_data(log_entry)
-
-        logging.info(f"Logged: Type: {connection_type}, SSID: {wifi_ssid}, Download: {download} Mbps, Upload: {upload} Mbps, Ping: {ping} ms")
-
+        entry = run_single_test()
+        if callback:
+            callback(entry)
         time.sleep(60)
 
 if __name__ == "__main__":

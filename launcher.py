@@ -12,15 +12,18 @@ from wifi_speed_logger import main as run_logger, CSV_FILE
 
 
 def open_csv():
-    """Opens the CSV file with the system's default application."""
+    """Opens the CSV file in a terminal editor."""
     csv_path = os.path.abspath(CSV_FILE)
     os_name = platform.system()
     if os_name == "Darwin":
-        subprocess.Popen(["open", csv_path])
+        subprocess.Popen([
+            "osascript", "-e",
+            f'tell application "Terminal" to do script "nano \'{csv_path}\'"'
+        ])
     elif os_name == "Windows":
-        os.startfile(csv_path)
+        subprocess.Popen(["cmd", "/c", "start", "cmd", "/k", "more", csv_path])
     else:
-        subprocess.Popen(["xdg-open", csv_path])
+        subprocess.Popen(["x-terminal-emulator", "-e", "nano", csv_path])
 
 
 def launch_gui():
@@ -104,7 +107,7 @@ def launch_gui():
 
     tk.Label(history_frame, text="Recent Tests", font=("Helvetica", 11, "bold"), anchor="w").pack(fill="x")
 
-    history_text = tk.Text(history_frame, height=5, font=("Courier", 10), state="disabled", bg="#F5F5F5", relief="flat")
+    history_text = tk.Text(history_frame, height=5, font=("Courier", 10), state="disabled", bg="#2D2D2D", fg="#E0E0E0", relief="flat", insertbackground="#E0E0E0")
     history_text.pack(fill="both", expand=True, pady=(5, 0))
 
     # --- Buttons ---

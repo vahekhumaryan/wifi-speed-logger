@@ -1,6 +1,6 @@
 # Internet Speed Logger
 
-A terminal-based internet speed logger written in Go. It runs a speed test every 60 seconds and logs results to a CSV file, with a live-updating TUI dashboard.
+I started this project to prove to my internet provider that their internet sucks. It's a terminal-based speed logger written in Go that runs a test every 60 seconds and logs results to a CSV file, with a live-updating TUI dashboard — so I have the receipts.
 
 ## Features
 

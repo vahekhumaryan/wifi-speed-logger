@@ -1,2 +1,6 @@
 .DS_Store
-.DS_Store
+venv/
+__pycache__/
+*.log
+wifi_speed_log.csv
+wifi_speed_log_old.csv

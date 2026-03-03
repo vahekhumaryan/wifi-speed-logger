@@ -1,65 +1,60 @@
 # Internet Speed Logger
 
-This script automatically logs your internet speed every minute to a CSV file. It records the date, time, connection type (Wi-Fi, Ethernet, etc.), Wi-Fi SSID (when on Wi-Fi), download and upload speeds (in Mbps), and ping (in ms).
+A terminal-based internet speed logger written in Go. It runs a speed test every 60 seconds and logs results to a CSV file, with a live-updating TUI dashboard.
 
 ## Features
 
-- **Automated Speed Tests**: Runs a speed test every 60 seconds.
-- **Connection Type Detection**: Identifies whether you're on Wi-Fi, Ethernet, or another connection.
-- **Wi-Fi SSID Logging**: Records the network name when connected via Wi-Fi.
-- **CSV Logging**: Saves results to a `wifi_speed_log.csv` file with headers.
-- **Cross-Platform Launchers**: Double-click launchers for macOS and Windows, terminal UI for Linux.
-- **Error Handling**: Gracefully handles network errors and continues running.
+- **Live TUI Dashboard**: Real-time display of speed test results using [Bubble Tea](https://github.com/charmbracelet/bubbletea) and [Lip Gloss](https://github.com/charmbracelet/lipgloss).
+- **Automated Speed Tests**: Runs a test every 60 seconds with a visible countdown.
+- **Connection Type Detection**: Identifies Wi-Fi, Ethernet, or other connections (macOS, Linux, Windows).
+- **Wi-Fi SSID Logging**: Records the network name when on Wi-Fi.
+- **CSV Logging**: Appends results to `wifi_speed_log.csv`.
+- **Cross-Platform**: Works on macOS, Linux, and Windows.
 
-## Installation
+## Quickstart
 
-1. **Clone the repository:**
-   ```bash
-   git clone https://github.com/vahekhumaryan/wifi-speed-logger.git
-   cd wifi-speed-logger
-   ```
+### Prerequisites
 
-2. **Create a virtual environment:**
-   ```bash
-   python -m venv venv
-   ```
+- [Go 1.21+](https://go.dev/dl/)
 
-3. **Activate the virtual environment:**
-   - On Linux/macOS:
-     ```bash
-     source venv/bin/activate
-     ```
-   - On Windows:
-     ```bash
-     venv\Scripts\activate
-     ```
-
-4. **Install the required packages:**
-   ```bash
-   pip install -r requirements.txt
-   ```
-
-## Usage
-
-### Using the Launcher (Recommended)
-
-- **macOS**: Double-click `start_logger_mac.command`. A window will appear confirming the logger is running. Click **Quit** to stop.
-- **Windows**: Double-click `start_logger_windows.bat`. A window will appear confirming the logger is running. Click **Quit** to stop.
-- **Linux**: Run the launcher from the terminal:
-  ```bash
-  python launcher.py
-  ```
-  A styled banner will confirm the logger is running. Press `Ctrl+C` to stop.
-
-### Running Directly
+### Build and run
 
 ```bash
-python wifi_speed_logger.py
+git clone https://github.com/vahekhumaryan/wifi-speed-logger.git
+cd wifi-speed-logger/go-app
+go build -o internet-speed-logger .
+./internet-speed-logger
 ```
 
-## Output Example (`wifi_speed_log.csv`)
+Press `q` or `Ctrl+C` to quit.
+
+### Run without building
+
+```bash
+cd go-app
+go run .
+```
+
+## Output
+
+Results are saved to `wifi_speed_log.csv` in the working directory:
 
 | Date       | Time     | Connection Type | Wi-Fi SSID | Download Speed (Mbps) | Upload Speed (Mbps) | Ping (ms) |
 |------------|----------|-----------------|------------|-----------------------|---------------------|-----------|
-| 2024-11-08 | 13:21:04 | Wi-Fi           | MyNetwork  | 85.12                 | 22.45               | 15.67     |
-| 2024-11-08 | 13:22:29 | Ethernet        |            | 120.50                | 45.30               | 8.20      |
+| 2026-03-03 | 13:21:04 | Wi-Fi           | MyNetwork  | 85.12                 | 22.45               | 15.67     |
+| 2026-03-03 | 13:22:29 | Ethernet        | N/A        | 120.50                | 45.30               | 8.20      |
+
+## Project Structure
+
+```
+go-app/
+  main.go          # TUI app (Bubble Tea model, view, update)
+  speedtest.go     # Speed test runner (speedtest-go)
+  network.go       # Connection type & SSID detection (macOS/Linux/Windows)
+  csv_logger.go    # CSV logging and test orchestration
+  go.mod / go.sum  # Go module dependencies
+```
+
+## License
+
+See [LICENSE](LICENSE) for details.

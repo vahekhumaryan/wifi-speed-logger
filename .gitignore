@@ -1,6 +1,10 @@
 .DS_Store
-venv/
-__pycache__/
-*.log
+.claude/
 wifi_speed_log.csv
 wifi_speed_log_old.csv
+*.log
+venv/
+__pycache__/
+
+# Go
+go-app/internet-speed-logger
